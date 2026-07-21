@@ -1,0 +1,21 @@
+{
+  "name": "nx-audit-tools",
+  "description": "NX 图片审核工具集 — 自动化图片内容审核工作流",
+  "version": "1.0.1",
+  "author": "xiaowu89",
+  "mcpServers": {
+    "nx-mcp-audit": {
+      "type": "url",
+      "url": "https://mcp.api-inference.modelscope.net/274be9de7fd649/mcp",
+      "description": "图片内容审核服务 — 鉴黄/政治/暴恐识别",
+      "required": true
+    }
+  },
+  "dependencies": {
+    "sharp": {
+      "version": ">=0.33.0",
+      "required": false,
+      "description": "图片压缩（>3MB 时自动使用），技能运行时会自动安装"
+    }
+  }
+}

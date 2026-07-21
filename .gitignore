@@ -1,0 +1,6 @@
+node_modules/
+tmp/
+docs/
+test-images/
+package.json
+package-lock.json
