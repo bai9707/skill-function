@@ -13,7 +13,7 @@ allow: Read(*), Bash(node:*), Bash(npm:install sharp)
 
 ## 前置条件：配置 MCP 服务
 
-使用本 skill 前，需在 Claude Code 的 `settings.json` 中配置 MCP 服务及 API Key：
+使用本 skill 前，需在 Claude Code 用户目录下创建 `.mcp.json` 文件，配置 MCP 服务及 API Key：
 
 ```json
 {
@@ -28,6 +28,8 @@ allow: Read(*), Bash(node:*), Bash(npm:install sharp)
   }
 }
 ```
+
+> `settings.json` 不支持 `mcpServers` 顶层字段，MCP 服务必须通过 `.mcp.json` 配置。
 
 配置后重启 Claude Code 或刷新 MCP 连接，skill 将通过 MCP 协议自动调用 `nx_img_audit` 工具。
 
@@ -67,7 +69,7 @@ const sharp=require('sharp');
 (async()=>{
   const path='图片路径';
   const raw=fs.readFileSync(path);
-  const compressed=await sharp(raw)
+  const compressed=await sharp(raw,{limitInputPixels:false})
     .resize(500,500,{fit:'inside',withoutEnlargement:true})
     .jpeg({quality:40})
     .toBuffer();
@@ -129,7 +131,7 @@ const sharp=require('sharp');
 
 | 场景 | 处理方式 |
 |------|----------|
-| API Key 未配置（`error: "未配置 API Key"`） | **中断审核**，提示"未配置 API Key，请在 settings.json 的 mcpServers.nx-mcp-audit.env.NX_API_KEY 中设置。没有 Key？联系微信 xiaowu89 获取。" |
+| API Key 未配置（`error: "未配置 API Key"`） | **中断审核**，提示"未配置 API Key，请在 `.mcp.json` 的 mcpServers.nx-mcp-audit.env.NX_API_KEY 中设置。没有 Key？联系微信 xiaowu89 获取。" |
 | 单张图片审核失败（`error` 字段） | 表格中标记 ❌ 失败，不阻塞其他图片 |
 | 文件不存在 | 跳过该文件，表格中标注"文件不存在" |
 | 不支持的文件格式 | 跳过该文件，表格中标注"格式不支持" |

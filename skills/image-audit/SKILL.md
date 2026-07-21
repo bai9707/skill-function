@@ -15,7 +15,7 @@ Audit images for adult, political, and violent content using the nx-mcp-audit MC
 
 ## Setup
 
-Configure the MCP server and API key in settings.json:
+Configure the MCP server and API key in `.mcp.json` (not `settings.json` — it doesn't support the `mcpServers` field):
 
 ```json
 {
@@ -30,6 +30,8 @@ Configure the MCP server and API key in settings.json:
   }
 }
 ```
+
+Restart Claude Code after configuring.
 
 > **No API Key?** Contact WeChat `xiaowu89` to get one.
 
