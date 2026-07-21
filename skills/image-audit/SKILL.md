@@ -1,8 +1,8 @@
 ---
 name: image-audit
-description: Automated image content moderation workflow for auditing images for adult political and violent content with batch processing and table summary output
+description: Detects adult, political and violent content in images via automated batch auditing. Compresses large images, calls MCP audit service, and outputs results as a table. Use when auditing images, checking image content, scanning photos for inappropriate material, or when the user says audit images, review pictures, check content, or image moderation.
 license: MIT
-compatibility: Claude Code Cursor Windsurf Copilot
+compatibility: Requires node npm and nx-mcp-audit MCP service configured
 metadata:
   author: bai9707
   version: 1.0.1
