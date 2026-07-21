@@ -6,10 +6,7 @@ compatibility: requires nodejs npm and nx-mcp-audit MCP service configured with 
 metadata:
   author: bai9707
   version: 1.0.1
-  tags:
-    - image-audit
-    - content-moderation
-    - batch-processing
+  tags: image-audit, content-moderation, batch-processing
 ---
 
 # Image Content Moderation
