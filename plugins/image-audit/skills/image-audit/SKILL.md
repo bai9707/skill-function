@@ -129,6 +129,7 @@ const sharp=require('sharp');
 
 | 场景 | 处理方式 |
 |------|----------|
+| API Key 未配置（`error: "未配置 API Key"`） | **中断审核**，提示"未配置 API Key，请在 settings.json 的 mcpServers.nx-mcp-audit.env.NX_API_KEY 中设置。没有 Key？联系微信 xiaowu89 获取。" |
 | 单张图片审核失败（`error` 字段） | 表格中标记 ❌ 失败，不阻塞其他图片 |
 | 文件不存在 | 跳过该文件，表格中标注"文件不存在" |
 | 不支持的文件格式 | 跳过该文件，表格中标注"格式不支持" |
