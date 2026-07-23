@@ -25,7 +25,7 @@ Create `.mcp.json` in your project directory:
 {
   "mcpServers": {
     "nx-mcp-compress": {
-      "type": "url",
+      "type": "streamable_http",
       "url": "https://mcp.api-inference.modelscope.net/da691d14ea0d46/mcp",
       "env": {
         "NX_API_KEY": "your-api-key-here"
