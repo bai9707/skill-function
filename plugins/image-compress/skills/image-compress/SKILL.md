@@ -114,26 +114,50 @@ console.log('data:image/'+mime+';base64,'+b64);
 
 ### 步骤三：调用压缩服务
 
-调用 `nx-mcp-compress` MCP 服务的 `nx_compress` 工具。
+优先使用 MCP 工具，不可用时降级为 curl 直接调用。
 
-**参数规则：**
+#### 方式 A：MCP 工具（优先）
+
+调用 `nx-mcp-compress` 的 `nx_compress` 工具。
+
+#### 方式 B：curl 直接调用（MCP 不可用时降级）
+
+MCP 工具未加载时，改用 curl 直接调 MCP 服务 API，效果完全一致：
+
+```bash
+# 1. 获取 session
+SESSION=$(curl -s -D - "https://mcp.api-inference.modelscope.net/da691d14ea0d46/mcp" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"claude-code","version":"1.0"}}}' 2>&1 | grep -i "mcp-session-id" | tr -d '\r' | awk -F': ' '{print $2}')
+
+# 2. 发送 initialized
+curl -s -o /dev/null -X POST "https://mcp.api-inference.modelscope.net/da691d14ea0d46/mcp" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: $SESSION" \
+  -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
+
+# 3. 调用压缩（dataUrl 方式）
+curl -s -X POST "https://mcp.api-inference.modelscope.net/da691d14ea0d46/mcp" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: $SESSION" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"nx_compress","arguments":{"files":["data:image/jpeg;base64,..."],"quality":90,"apiKey":"sk-xxx"}}}'
+```
+
+> 每张图片一个 session，批量压缩共用 session 即可。
+
+**参数规则（两种方式一致）：**
 | 参数 | 类型 | 必填 | 默认值 | 说明 |
 |------|------|------|--------|------|
-| `urls` | `string[]` | 与 files 二选一 | — | 支持 HTTP URL / 本地绝对路径 / dataUrl |
-| `files` | `string[]` | 与 urls 二选一 | — | dataUrl 格式（`data:image/...;base64,...`） |
+| `urls` | `string[]` | 与 files 二选一 | — | HTTP URL / dataUrl |
+| `files` | `string[]` | 与 urls 二选一 | — | dataUrl 格式 |
 | `quality` | `integer` | 否 | `90` | 压缩质量 1~100 |
 | `output` | `string` | 否 | — | `"overwrite"` 覆盖原文件 / 目录路径另存 |
+| `apiKey` | `string` | **是** | — | 从 `.mcp.json` 中 `env.NX_API_KEY` 读取 |
 
-> 本地 Stdio 模式支持本地路径和 dataUrl，无文件大小限制。远程 HTTP 模式仅支持 URL。
-
-**output 模式说明：**
-| output 值 | 效果 |
-|-----------|------|
-| 不传 | 仅返回 CDN 链接，不写本地文件 |
-| `"overwrite"` | 下载压缩版覆盖原文件 |
-| 目录路径 | 另存到指定目录，原文件不动 |
-
-> 默认不传 output，用户有需要时再指定。
+> curl 方式需**显式传 apiKey**，从 `.mcp.json` 的 `env.NX_API_KEY` 中获取。
 
 ### 步骤四：汇总结果
 
