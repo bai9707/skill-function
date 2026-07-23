@@ -36,8 +36,6 @@ Configure the MCP server and API key in `.mcp.json` (not `settings.json` — it 
 
 Restart Claude Code after configuring.
 
-> **No API Key?** Contact WeChat `xiaowu89` to get one.
-
 ## Usage
 
 Say "audit these images" and the skill will:
