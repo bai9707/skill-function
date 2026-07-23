@@ -25,8 +25,8 @@ Add to `%USERPROFILE%\.mcp.json`:
 {
   "mcpServers": {
     "nx-mcp-compress": {
-      "command": "npx",
-      "args": ["-y", "nx-mcp-server"],
+      "type": "url",
+      "url": "https://mcp.api-inference.modelscope.net/2a6a653cc4fc42/mcp",
       "env": {
         "NX_API_KEY": "your-api-key-here"
       }
