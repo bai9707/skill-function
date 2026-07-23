@@ -70,6 +70,10 @@ Say "compress these images" and the skill will:
 - `compressedUrl` — CDN URL of compressed image
 - `summary` — aggregate stats (total, success, failed)
 
+## Size Limit
+
+Remote MCP limits single file to **5MB**. Files exceeding this are rejected.
+
 ## Supported Formats
 
 png, jpg, jpeg, bmp, webp, tga
