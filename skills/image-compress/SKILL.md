@@ -49,8 +49,9 @@ If MCP returns `MISSING_API_KEY` or `API_AUTH_FAILED`:
 Say "compress these images" and the skill will:
 
 1. Collect images from a folder path or URL
-2. Call the nx_compress MCP tool for each image
-3. Summarize compression results in a table with size comparison and ratio
+2. Convert local files to dataUrl (remote MCP cannot access local disk)
+3. Call the nx_compress MCP tool with dataUrl or HTTP URLs
+4. Summarize compression results in a table with size comparison and ratio
 
 ## Parameters
 
