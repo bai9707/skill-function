@@ -19,7 +19,7 @@ The skill auto-detects MCP configuration on first run. If the `nx_compress` tool
 
 ### 1. Install MCP Server
 
-Add to `%USERPROFILE%\.mcp.json`:
+Create `.mcp.json` in your project directory:
 
 ```json
 {
